@@ -1,53 +1,99 @@
-  To run when MySQL is ready:
-  # Create DB
-  php bin/console doctrine:database:create
+# back_react — Symfony 7.3 REST API
 
-  # Generate + run migration
-  php bin/console doctrine:migrations:diff
-  php bin/console doctrine:migrations:migrate --no-interaction
+JWT-authenticated API for students, companies, and job offers. PostgreSQL + Docker.
 
-  # Seed data
-  php bin/console doctrine:fixtures:load --no-interaction
+## Requirements
 
-  # Verify
-  php bin/console dbal:run-sql "SELECT COUNT(*) FROM student"
+| Tool | Version |
+|------|---------|
+| PHP | ≥ 8.2 |
+| Composer | ≥ 2.x |
+| Docker + Docker Compose | any recent |
+| Symfony CLI | optional but recommended |
+| OpenSSL | for JWT keys |
 
-    Routes registered:
+---
 
-  ┌───────────┬────────────────────┬────────────────────────────────────────────────────────┐
-  │  Method   │        Path        │                         Guard                          │
-  ├───────────┼────────────────────┼────────────────────────────────────────────────────────┤
-  │ POST      │ /api/auth/register │ PUBLIC                                                 │
-  ├───────────┼────────────────────┼────────────────────────────────────────────────────────┤
-  │ POST      │ /api/auth/login    │ PUBLIC (JWT firewall)                                  │
-  ├───────────┼────────────────────┼────────────────────────────────────────────────────────┤
-  │ GET       │ /api/students      │ PUBLIC — ?skillId=&promotionYear=&search=&page=&limit= │
-  ├───────────┼────────────────────┼────────────────────────────────────────────────────────┤
-  │ GET       │ /api/students/{id} │ PUBLIC                                                 │
-  ├───────────┼────────────────────┼────────────────────────────────────────────────────────┤
-  │ POST      │ /api/students      │ ROLE_STUDENT                                           │
-  ├───────────┼────────────────────┼────────────────────────────────────────────────────────┤
-  │ PUT/PATCH │ /api/students/{id} │ ROLE_STUDENT + ownership check                         │
-  ├───────────┼────────────────────┼────────────────────────────────────────────────────────┤
-  │ GET       │ /api/offers        │ PUBLIC — ?type=&skillId=&isRemote=&search=             │
-  ├───────────┼────────────────────┼────────────────────────────────────────────────────────┤
-  ├───────────┼────────────────────┼────────────────────────────────────────────────────────┤
-  │ GET       │ /api/offers/{id}   │ PUBLIC                                                 │
-  ├───────────┼────────────────────┼────────────────────────────────────────────────────────┤
-  │ POST      │ /api/offers        │ ROLE_COMPANY                                           │
-  ├───────────┼────────────────────┼────────────────────────────────────────────────────────┤
-  │ PUT/PATCH │ /api/offers/{id}   │ ROLE_COMPANY + ownership check                         │
-  ├───────────┼────────────────────┼────────────────────────────────────────────────────────┤
-  │ DELETE    │ /api/offers/{id}   │ ROLE_COMPANY + ownership check                         │
-  └───────────┴────────────────────┴────────────────────────────────────────────────────────┘
+## Installation
 
-  Architecture:
-  - Controllers → thin: decode JSON, validate DTO, call service, return JSON
-  - Services → business logic + normalization (no Serializer magic, full control)
-  - Repositories → query logic (findVisibleWithFilters, findOneWithDetails)
+### 1. Clone & install dependencies
 
-  To run against a real DB:
-  php bin/console doctrine:database:create
-  php bin/console doctrine:migrations:diff
-  php bin/console doctrine:migrations:migrate --no-interaction
-  php bin/console doctrine:fixtures:load --no-interaction
+```bash
+composer install
+```
+
+### 2. Configure environment
+
+Copy and edit the dev env file:
+
+```bash
+cp .env.dev .env.local
+```
+
+Edit `.env.local` — set these variables:
+
+```dotenv
+APP_ENV=dev
+APP_SECRET=changeme_random_32chars
+
+DATABASE_URL="postgresql://app:!ChangeMe!@127.0.0.1:5432/app?serverVersion=16&charset=utf8"
+DEFAULT_URI="postgresql://app:!ChangeMe!@127.0.0.1:5432/app?serverVersion=16&charset=utf8"
+
+JWT_SECRET_KEY=%kernel.project_dir%/config/jwt/private.pem
+JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem
+JWT_PASSPHRASE=changeme
+```
+
+### 3. Start PostgreSQL via Docker
+
+```bash
+docker compose up -d
+```
+
+DB runs on `localhost:5432`, user `app`, password `!ChangeMe!`, database `app`.
+
+### 4. Generate JWT keys
+
+```bash
+mkdir -p config/jwt
+openssl genpkey -algorithm RSA -out config/jwt/private.pem -pkeyopt rsa_keygen_bits:4096
+openssl rsa -pubout -in config/jwt/private.pem -out config/jwt/public.pem
+```
+
+> If you set a passphrase during key generation, match it in `JWT_PASSPHRASE`.
+
+### 5. Setup database
+
+**Option A — Doctrine (recommended):**
+
+```bash
+php bin/console doctrine:database:create
+php bin/console doctrine:migrations:diff
+php bin/console doctrine:migrations:migrate --no-interaction
+```
+
+### 6. Load fixtures (optional dev data)
+
+```bash
+php bin/console doctrine:fixtures:load --no-interaction
+```
+
+---
+
+## Run
+
+**With Symfony CLI:**
+
+```bash
+symfony server:start
+```
+
+API available at `http://localhost:8000`
+
+---
+
+## Tests
+
+```bash
+php bin/phpunit
+```

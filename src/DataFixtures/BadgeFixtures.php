@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Badge;
+use App\Entity\Student;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -25,7 +26,7 @@ class BadgeFixtures extends Fixture implements DependentFixtureInterface
         $faker = Factory::create('fr_FR');
 
         for ($i = 0; $i < 20; $i++) {
-            $student = $this->getReference('student_' . $i);
+            $student = $this->getReference('student_' . $i, Student::class);
             $nbBadges = $faker->numberBetween(1, 3);
             $templates = $faker->randomElements(self::BADGE_TEMPLATES, $nbBadges, false);
             $totalPoints = 0;

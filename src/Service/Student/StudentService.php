@@ -95,6 +95,18 @@ class StudentService
         if ($dto->promotionYear !== null) {
             $student->setPromotionYear($dto->promotionYear);
         }
+        if ($dto->school !== null) {
+            $student->setSchool($dto->school);
+        }
+        if ($dto->domain !== null) {
+            $student->setDomain($dto->domain);
+        }
+        if ($dto->studyYear !== null) {
+            $student->setStudyYear($dto->studyYear);
+        }
+        if ($dto->cvUrl !== null) {
+            $student->setCvUrl($dto->cvUrl);
+        }
         if ($dto->isVisible !== null) {
             $student->setIsVisible($dto->isVisible);
         }
@@ -121,6 +133,9 @@ class StudentService
             'firstName'     => $student->getFirstName(),
             'lastName'      => $student->getLastName(),
             'promotionYear' => $student->getPromotionYear(),
+            'school'        => $student->getSchool(),
+            'domain'        => $student->getDomain(),
+            'studyYear'     => $student->getStudyYear(),
             'score'         => $student->getScore(),
             'avatarUrl'     => $student->getAvatarUrl(),
             'skills'        => $student->getStudentSkills()
@@ -148,6 +163,10 @@ class StudentService
             'githubUrl'     => $student->getGithubUrl(),
             'linkedinUrl'   => $student->getLinkedinUrl(),
             'promotionYear' => $student->getPromotionYear(),
+            'school'        => $student->getSchool(),
+            'domain'        => $student->getDomain(),
+            'studyYear'     => $student->getStudyYear(),
+            'cvUrl'         => $student->getCvUrl(),
             'score'         => $student->getScore(),
             'isVisible'     => $student->isVisible(),
             'createdAt'     => $student->getCreatedAt()->format('Y-m-d\TH:i:s\Z'),
@@ -213,6 +232,18 @@ class StudentService
         }
         if ($dto->promotionYear !== null) {
             $student->setPromotionYear($dto->promotionYear);
+        }
+        if ($dto->school !== null) {
+            $student->setSchool($dto->school);
+        }
+        if ($dto->domain !== null) {
+            $student->setDomain($dto->domain);
+        }
+        if ($dto->studyYear !== null) {
+            $student->setStudyYear($dto->studyYear);
+        }
+        if ($dto->cvUrl !== null) {
+            $student->setCvUrl($dto->cvUrl);
         }
 
         $this->em->persist($student);

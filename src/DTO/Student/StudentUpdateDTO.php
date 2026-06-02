@@ -26,6 +26,18 @@ class StudentUpdateDTO
     #[Assert\Range(min: 2000, max: 2100)]
     public ?int $promotionYear = null;
 
+    #[Assert\Length(max: 255)]
+    public ?string $school = null;
+
+    #[Assert\Length(max: 100)]
+    public ?string $domain = null;
+
+    #[Assert\Range(min: 1, max: 5)]
+    public ?int $studyYear = null;
+
+    #[Assert\Url]
+    public ?string $cvUrl = null;
+
     public ?bool $isVisible = null;
 
     /**

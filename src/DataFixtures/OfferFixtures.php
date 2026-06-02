@@ -2,9 +2,11 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\Company;
 use App\Entity\Enum\OfferStatus;
 use App\Entity\Enum\OfferType;
 use App\Entity\Offer;
+use App\Entity\Skill;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -19,7 +21,7 @@ class OfferFixtures extends Fixture implements DependentFixtureInterface
         $types = OfferType::cases();
 
         for ($i = 0; $i < 10; $i++) {
-            $companyRef = $this->getReference('company_' . ($i % 5));
+            $companyRef = $this->getReference('company_' . ($i % 5), Company::class);
 
             $offer = new Offer();
             $offer->setCompany($companyRef);
@@ -38,7 +40,7 @@ class OfferFixtures extends Fixture implements DependentFixtureInterface
             // 2–4 required skills
             $skillIndices = (array) array_rand(range(0, $skillCount - 1), $faker->numberBetween(2, 4));
             foreach ($skillIndices as $skillIdx) {
-                $offer->addRequiredSkill($this->getReference(SkillFixtures::getSkillRef($skillIdx)));
+                $offer->addRequiredSkill($this->getReference(SkillFixtures::getSkillRef($skillIdx), Skill::class));
             }
         }
 

@@ -51,6 +51,22 @@ class Student
     #[Assert\Range(min: 2000, max: 2100)]
     private ?int $promotionYear = null;
 
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
+    private ?string $school = null;
+
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
+    #[Assert\Length(max: 100)]
+    private ?string $domain = null;
+
+    #[ORM\Column(type: 'smallint', nullable: true)]
+    #[Assert\Range(min: 1, max: 5)]
+    private ?int $studyYear = null;
+
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Url]
+    private ?string $cvUrl = null;
+
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private int $score = 0;
 
@@ -188,6 +204,54 @@ class Student
     public function setPromotionYear(?int $promotionYear): static
     {
         $this->promotionYear = $promotionYear;
+
+        return $this;
+    }
+
+    public function getSchool(): ?string
+    {
+        return $this->school;
+    }
+
+    public function setSchool(?string $school): static
+    {
+        $this->school = $school;
+
+        return $this;
+    }
+
+    public function getDomain(): ?string
+    {
+        return $this->domain;
+    }
+
+    public function setDomain(?string $domain): static
+    {
+        $this->domain = $domain;
+
+        return $this;
+    }
+
+    public function getStudyYear(): ?int
+    {
+        return $this->studyYear;
+    }
+
+    public function setStudyYear(?int $studyYear): static
+    {
+        $this->studyYear = $studyYear;
+
+        return $this;
+    }
+
+    public function getCvUrl(): ?string
+    {
+        return $this->cvUrl;
+    }
+
+    public function setCvUrl(?string $cvUrl): static
+    {
+        $this->cvUrl = $cvUrl;
 
         return $this;
     }

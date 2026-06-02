@@ -109,6 +109,10 @@ class StudentController extends AbstractApiController
         $dto->githubUrl    = $body['githubUrl']    ?? null;
         $dto->linkedinUrl  = $body['linkedinUrl']  ?? null;
         $dto->promotionYear = isset($body['promotionYear']) ? (int) $body['promotionYear'] : null;
+        $dto->school       = $body['school']       ?? null;
+        $dto->domain       = $body['domain']       ?? null;
+        $dto->studyYear    = isset($body['studyYear']) ? (int) $body['studyYear'] : null;
+        $dto->cvUrl        = $body['cvUrl']        ?? null;
         $dto->skills       = $body['skills']       ?? [];
         $dto->projects     = $body['projects']     ?? [];
 
@@ -139,6 +143,18 @@ class StudentController extends AbstractApiController
         }
         if (array_key_exists('promotionYear', $body)) {
             $dto->promotionYear = $body['promotionYear'] !== null ? (int) $body['promotionYear'] : null;
+        }
+        if (array_key_exists('school', $body)) {
+            $dto->school = $body['school'];
+        }
+        if (array_key_exists('domain', $body)) {
+            $dto->domain = $body['domain'];
+        }
+        if (array_key_exists('studyYear', $body)) {
+            $dto->studyYear = $body['studyYear'] !== null ? (int) $body['studyYear'] : null;
+        }
+        if (array_key_exists('cvUrl', $body)) {
+            $dto->cvUrl = $body['cvUrl'];
         }
         if (array_key_exists('isVisible', $body)) {
             $dto->isVisible = (bool) $body['isVisible'];

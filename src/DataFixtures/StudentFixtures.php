@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Enum\SkillLevel;
+use App\Entity\Skill;
 use App\Entity\Student;
 use App\Entity\StudentSkill;
 use App\Entity\User;
@@ -48,7 +49,7 @@ class StudentFixtures extends Fixture implements DependentFixtureInterface
             foreach ($skillIndices as $skillIdx) {
                 $ss = new StudentSkill();
                 $ss->setStudent($student);
-                $ss->setSkill($this->getReference(SkillFixtures::getSkillRef($skillIdx)));
+                $ss->setSkill($this->getReference(SkillFixtures::getSkillRef($skillIdx), Skill::class));
                 $ss->setLevel($faker->randomElement($levels));
                 $ss->setYearsOfExperience($faker->numberBetween(0, 4));
                 $manager->persist($ss);

@@ -4,6 +4,8 @@ namespace App\DataFixtures;
 
 use App\Entity\Project;
 use App\Entity\ProjectSkill;
+use App\Entity\Skill;
+use App\Entity\Student;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -17,7 +19,7 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface
         $skillCount = SkillFixtures::getSkillCount();
 
         for ($i = 0; $i < 20; $i++) {
-            $student = $this->getReference('student_' . $i);
+            $student = $this->getReference('student_' . $i, Student::class);
             $nbProjects = $faker->numberBetween(2, 4);
 
             for ($j = 0; $j < $nbProjects; $j++) {
@@ -35,7 +37,7 @@ class ProjectFixtures extends Fixture implements DependentFixtureInterface
                 foreach ($skillIndices as $k => $skillIdx) {
                     $ps = new ProjectSkill();
                     $ps->setProject($project);
-                    $ps->setSkill($this->getReference(SkillFixtures::getSkillRef($skillIdx)));
+                    $ps->setSkill($this->getReference(SkillFixtures::getSkillRef($skillIdx), Skill::class));
                     $ps->setIsPrimary($k === 0);
                     $manager->persist($ps);
                 }
