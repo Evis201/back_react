@@ -14,7 +14,7 @@ function Signup() {
     email: "",
     password: "",
     confirm: "",
-    role: "ROLE_STUDENT",
+    role: "student",
     firstName: "",
     lastName: "",
     companyName: "",
@@ -43,7 +43,7 @@ function Signup() {
       role: form.role,
     };
 
-    if (form.role === "ROLE_STUDENT") {
+    if (form.role === "student") {
       body.firstName = form.firstName;
       body.lastName = form.lastName;
     } else {
@@ -88,8 +88,8 @@ function Signup() {
 
             <div className="field">
               <select name="role" value={form.role} onChange={handleChange} className="input">
-                <option value="ROLE_STUDENT">Étudiant</option>
-                <option value="ROLE_COMPANY">Entreprise</option>
+                <option value="student">Étudiant</option>
+                <option value="company">Entreprise</option>
               </select>
             </div>
 
@@ -97,7 +97,7 @@ function Signup() {
               <input name="email" type="email" value={form.email} onChange={handleChange} required className="input" placeholder="Email" />
             </div>
 
-            {form.role === "ROLE_STUDENT" ? (
+            {form.role === "student" ? (
               <>
                 <div className="field">
                   <input name="firstName" value={form.firstName} onChange={handleChange} required className="input" placeholder="Prénom" />
