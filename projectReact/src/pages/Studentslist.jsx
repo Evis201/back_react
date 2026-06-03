@@ -103,12 +103,10 @@ function Studentslist() {
                         >
                             <div className="student-card">
                                 <img
-                                    src={
-                                        student.avatarUrl ||
-                                        "https://placehold.co/150x150?text=Etudiant"
-                                    }
+                                    src={student.avatarUrl || `/img/${student.id}.jpg`}
                                     alt={`${student.firstName} ${student.lastName}`}
                                     className="student-avatar"
+                                    onError={(e) => { e.target.onerror = null; e.target.src = 'https://placehold.co/150x150?text=Etudiant' }}
                                 />
 
                                 <h2>

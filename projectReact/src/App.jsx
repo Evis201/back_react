@@ -8,6 +8,7 @@ import StudentDetail from './pages/StudentDetail.jsx'
 import Home from './pages/Home.jsx'
 import Offers from './pages/offers.jsx'
 import OfferDetail from './pages/offersdetail.jsx'
+import CreateProfile from './pages/CreateProfile.jsx'
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
         <Route path="/offers/:id" element={<OfferDetail />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Signup />} />
+        <Route path="/profil/creer" element={<CreateProfile />} />
       </Routes>
     </>
   )

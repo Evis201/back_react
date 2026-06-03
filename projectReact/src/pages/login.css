@@ -139,6 +139,8 @@ body.no-scroll{overflow:hidden}
 
 .signup-link{color:var(--accent)}
 
+.form-error{color:#c62828;font-size:0.88rem;margin:0 0 12px 0;background:#fff3f3;border:1px solid #ffcdd2;border-radius:8px;padding:10px 14px}
+
 @media (max-width:880px){
 	.login-container{grid-template-columns:1fr; padding:40px 24px;}
 	.brand-logo{left:18px; width:160px}

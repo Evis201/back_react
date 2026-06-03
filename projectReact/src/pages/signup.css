@@ -42,4 +42,6 @@ body.no-scroll{overflow:hidden}
 .primary-btn{background: linear-gradient(180deg,var(--primary-1),var(--primary-2));color:#fff;border:none;padding:16px 22px;border-radius:12px;font-size:16px;cursor:pointer;box-shadow: 0 32px 48px var(--btn-shadow);transition:transform .14s ease, box-shadow .14s ease}
 .primary-btn:hover{transform:translateY(-2px); box-shadow: 0 40px 70px rgba(34,60,110,0.18)}
 
+.form-error{color:#c62828;font-size:0.88rem;margin:0 0 12px 0;background:#fff3f3;border:1px solid #ffcdd2;border-radius:8px;padding:10px 14px}
+
 @media (max-width:880px){.signup-container{grid-template-columns:1fr;padding:40px 24px}.brand-logo{left:18px;width:160px}.signup-right{margin-top:30px}.title{font-size:40px}}

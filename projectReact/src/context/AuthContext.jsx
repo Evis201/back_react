@@ -2,21 +2,31 @@ import { createContext, useContext, useState } from 'react'
 
 const AuthContext = createContext(null)
 
+function decodeJwt(token) {
+  try { return JSON.parse(atob(token.split('.')[1])) } catch { return null }
+}
+
 export function AuthProvider({ children }) {
   const [token, setToken] = useState(() => localStorage.getItem('jwt_token'))
+  const [user, setUser] = useState(() => {
+    const t = localStorage.getItem('jwt_token')
+    return t ? decodeJwt(t) : null
+  })
 
   function login(newToken) {
     localStorage.setItem('jwt_token', newToken)
     setToken(newToken)
+    setUser(decodeJwt(newToken))
   }
 
   function logout() {
     localStorage.removeItem('jwt_token')
     setToken(null)
+    setUser(null)
   }
 
   return (
-    <AuthContext.Provider value={{ token, login, logout }}>
+    <AuthContext.Provider value={{ token, user, login, logout }}>
       {children}
     </AuthContext.Provider>
   )

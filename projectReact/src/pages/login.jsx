@@ -39,7 +39,10 @@ function Login() {
 				throw new Error("Réponse invalide du serveur (pas de token).");
 			}
 			login(body.token);
-			navigate("/");
+			let decoded = {}
+			try { decoded = JSON.parse(atob(body.token.split('.')[1])) } catch (_) {}
+			const roles = decoded.roles ?? []
+			navigate(roles.includes('ROLE_STUDENT') ? '/profil/creer' : '/');
 		} catch (err) {
 			setError(err.message);
 		} finally {

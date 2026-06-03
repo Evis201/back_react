@@ -56,12 +56,10 @@ function StudentDetail() {
 
             <div className="student-detail-card">
                 <img
-                    src={
-                        student.avatarUrl ||
-                        "https://placehold.co/150x150?text=Etudiant"
-                    }
+                    src={student.avatarUrl || `/img/${student.id}.jpg`}
                     alt={`${student.firstName} ${student.lastName}`}
                     className="student-avatar student-detail-avatar"
+                    onError={(e) => { e.target.onerror = null; e.target.src = 'https://placehold.co/150x150?text=Etudiant' }}
                 />
 
                 <div className="student-detail-content">
