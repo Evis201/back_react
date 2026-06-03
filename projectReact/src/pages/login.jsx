@@ -29,12 +29,16 @@ function Login() {
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ email, password }),
 			});
+			const text = await res.text();
+			let body = {};
+			try { body = JSON.parse(text); } catch (_) {}
 			if (!res.ok) {
-				const body = await res.json().catch(() => ({}));
-				throw new Error(body.message || "Identifiants invalides.");
+				throw new Error(`[${res.status}] ${body.message || body.error || text.slice(0, 120)}`);
 			}
-			const { token } = await res.json();
-			login(token);
+			if (!body.token) {
+				throw new Error("Réponse invalide du serveur (pas de token).");
+			}
+			login(body.token);
 			navigate("/");
 		} catch (err) {
 			setError(err.message);

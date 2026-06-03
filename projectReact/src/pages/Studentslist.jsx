@@ -105,7 +105,7 @@ function Studentslist() {
                                 <img
                                     src={
                                         student.avatarUrl ||
-                                        "https://via.placeholder.com/150x150?text=Etudiant"
+                                        "https://placehold.co/150x150?text=Etudiant"
                                     }
                                     alt={`${student.firstName} ${student.lastName}`}
                                     className="student-avatar"

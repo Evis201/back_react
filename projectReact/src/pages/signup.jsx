@@ -59,7 +59,10 @@ function Signup() {
       });
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.error || "Erreur lors de l'inscription.");
+        const msg = data.details
+          ? data.details.map((d) => d.message).join(' | ')
+          : (data.error || "Erreur lors de l'inscription.");
+        throw new Error(msg);
       }
       navigate("/login");
     } catch (err) {
