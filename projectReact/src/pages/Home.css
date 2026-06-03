@@ -1,0 +1,131 @@
+.no-scroll-body {
+  /* fallback class in case body selector needs to be applied via container */
+}
+
+body.no-scroll {
+  overflow: hidden;
+  height: 100vh;
+}
+
+.home-page {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem 3rem;
+}
+
+.hero-section {
+  width: min(1120px, 100%);
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 2rem;
+  align-items: center;
+}
+
+.hero-copy {
+  padding: 2.5rem;
+  border-radius: 32px;
+  background: #ffffff;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.08);
+}
+
+.hero-label {
+  display: inline-flex;
+  padding: 0.65rem 1rem;
+  border-radius: 999px;
+  background: rgba(249, 177, 27, 0.14);
+  color: #21427c;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.hero-copy h1 {
+  margin: 0;
+  font-size: clamp(2.4rem, 4vw, 4.2rem);
+  line-height: 1.03;
+  color: #0f172a;
+}
+
+.hero-copy p {
+  margin: 1.6rem 0 2rem;
+  max-width: 40rem;
+  color: rgba(15, 23, 42, 0.78);
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+.hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.hero-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 160px;
+  padding: 1rem 1.5rem;
+  border-radius: 999px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
+}
+
+.hero-button.primary {
+  background: #21427c;
+  color: #ffffff;
+  box-shadow: 0 16px 32px rgba(33, 66, 124, 0.18);
+}
+
+.hero-button.secondary {
+  background: rgba(33, 66, 124, 0.08);
+  color: #21427c;
+}
+
+.hero-button:hover {
+  transform: translateY(-1px);
+}
+
+.hero-highlight {
+  display: grid;
+  gap: 1rem;
+}
+
+.feature-card {
+  padding: 1.5rem 1.75rem;
+  border-radius: 24px;
+  background: #dbe3f8;
+  color: #21427c;
+}
+
+.feature-card h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.05rem;
+}
+
+.feature-card p {
+  margin: 0;
+  color: rgba(33, 66, 124, 0.8);
+}
+
+@media (max-width: 900px) {
+  .hero-section {
+    grid-template-columns: 1fr;
+  }
+
+  .hero-copy {
+    padding: 1.75rem;
+  }
+}
+
+@media (max-width: 620px) {
+  .container {
+    padding-top: 2rem;
+  }
+
+  .hero-copy h1 {
+    font-size: 2.4rem;
+  }
+}

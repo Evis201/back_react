@@ -54,6 +54,38 @@ class OfferRepository extends ServiceEntityRepository
                   ->getResult();
     }
 
+    public function countPublishedWithFilters(array $filters = []): int
+    {
+        $qb = $this->createQueryBuilder('o')
+            ->select('COUNT(o.id)')
+            ->join('o.company', 'c')
+            ->where('o.status = :status')
+            ->setParameter('status', OfferStatus::Published);
+
+        if (!empty($filters['type'])) {
+            $qb->andWhere('o.type = :type')
+               ->setParameter('type', $filters['type']);
+        }
+
+        if (!empty($filters['skillId'])) {
+            $qb->join('o.requiredSkills', 'rs')
+               ->andWhere('rs.id = :skillId')
+               ->setParameter('skillId', (int) $filters['skillId']);
+        }
+
+        if (!empty($filters['isRemote'])) {
+            $qb->andWhere('o.isRemote = :isRemote')
+               ->setParameter('isRemote', filter_var($filters['isRemote'], FILTER_VALIDATE_BOOLEAN));
+        }
+
+        if (!empty($filters['search'])) {
+            $qb->andWhere('o.title LIKE :search OR o.description LIKE :search OR c.name LIKE :search')
+               ->setParameter('search', '%' . $filters['search'] . '%');
+        }
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
     public function findOneWithDetails(int $id): ?Offer
     {
         return $this->createQueryBuilder('o')

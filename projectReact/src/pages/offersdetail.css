@@ -1,0 +1,150 @@
+﻿.offer-detail-page {
+  padding: 2rem 1rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.detail-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #1d4ed8;
+  text-decoration: none;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+.offer-detail-status {
+  padding: 2rem;
+  text-align: center;
+  color: #1f2937;
+}
+
+.offer-detail-error {
+  color: #b91c1c;
+}
+
+.offer-detail-card {
+  background: #ffffff;
+  border-radius: 24px;
+  padding: 2rem;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+  display: grid;
+  gap: 1.8rem;
+}
+
+.offer-detail-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.offer-detail-header h1 {
+  margin: 0.3rem 0 0;
+  font-size: clamp(2rem, 2.4vw, 2.6rem);
+  color: #0f172a;
+}
+
+.offer-detail-company {
+  margin: 0.6rem 0 0;
+  color: #475569;
+  font-size: 1rem;
+}
+
+.offer-detail-type {
+  display: inline-flex;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.offer-detail-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: flex-end;
+}
+
+.detail-badge {
+  display: inline-flex;
+  padding: 0.6rem 0.95rem;
+  border-radius: 999px;
+  background: #f8fafc;
+  color: #334155;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.offer-detail-meta {
+  display: grid;
+  gap: 2rem;
+}
+
+.offer-detail-meta h2,
+.offer-detail-info h3,
+.offer-skills h2 {
+  margin: 0 0 0.75rem;
+  color: #0f172a;
+}
+
+.offer-detail-meta p {
+  margin: 0;
+  color: #475569;
+  line-height: 1.8;
+}
+
+.offer-detail-info {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.offer-detail-info div {
+  padding: 1.2rem;
+  background: #f8fafc;
+  border-radius: 18px;
+}
+
+.offer-detail-info a {
+  color: #1d4ed8;
+  text-decoration: none;
+  display: inline-block;
+  max-width: 100%;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+
+.offer-skills {
+  padding-top: 1rem;
+}
+
+.skills-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.skill-chip {
+  display: inline-flex;
+  padding: 0.7rem 1rem;
+  border-radius: 999px;
+  background: #e0f2fe;
+  color: #0c4a6e;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 720px) {
+  .offer-detail-header {
+    flex-direction: column;
+  }
+
+  .offer-detail-badges {
+    justify-content: flex-start;
+  }
+}

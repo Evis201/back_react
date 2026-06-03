@@ -36,7 +36,7 @@ class OfferService
 
         return [
             'items' => array_map($this->normalizeListItem(...), $offers),
-            'total' => count($offers), // simplified; use a count query for large sets
+            'total' => $this->offerRepository->countPublishedWithFilters($filters),
             'page'  => $page,
             'limit' => $limit,
         ];
