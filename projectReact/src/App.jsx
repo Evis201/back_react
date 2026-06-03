@@ -9,6 +9,9 @@ import Home from './pages/Home.jsx'
 import Offers from './pages/offers.jsx'
 import OfferDetail from './pages/offersdetail.jsx'
 import CreateProfile from './pages/CreateProfile.jsx'
+import SwipePage from './pages/SwipePage.jsx'
+import LikedStudents from './pages/LikedStudents.jsx'
+import AdminPage from './pages/AdminPage.jsx'
 
 
 function App() {
@@ -26,6 +29,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Signup />} />
         <Route path="/profil/creer" element={<CreateProfile />} />
+        <Route path="/swipe" element={<SwipePage />} />
+        <Route path="/swipe/liked" element={<LikedStudents />} />
+        <Route path="/admin" element={<AdminPage />} />
       </Routes>
     </>
   )

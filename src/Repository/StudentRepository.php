@@ -76,6 +76,60 @@ class StudentRepository extends ServiceEntityRepository
         return (int) $qb->getQuery()->getSingleScalarResult();
     }
 
+    /** @return Student[] */
+    public function findAllWithFilters(array $filters = [], int $page = 1, int $limit = 25): array
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->join('s.user', 'u')
+            ->orderBy('s.createdAt', 'DESC');
+
+        if (!empty($filters['search'])) {
+            $qb->andWhere('s.firstName LIKE :search OR s.lastName LIKE :search OR u.email LIKE :search')
+               ->setParameter('search', '%' . $filters['search'] . '%');
+        }
+
+        $offset = ($page - 1) * $limit;
+
+        return $qb->setFirstResult($offset)
+                  ->setMaxResults($limit)
+                  ->getQuery()
+                  ->getResult();
+    }
+
+    public function countAllWithFilters(array $filters = []): int
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->select('COUNT(s.id)')
+            ->join('s.user', 'u');
+
+        if (!empty($filters['search'])) {
+            $qb->andWhere('s.firstName LIKE :search OR s.lastName LIKE :search OR u.email LIKE :search')
+               ->setParameter('search', '%' . $filters['search'] . '%');
+        }
+
+        return (int) $qb->getQuery()->getSingleScalarResult();
+    }
+
+    /** @return Student[] */
+    public function findVisibleExcludingIds(array $excludeIds, int $limit = 10): array
+    {
+        $qb = $this->createQueryBuilder('s')
+            ->leftJoin('s.studentSkills', 'ss')->addSelect('ss')
+            ->leftJoin('ss.skill', 'sk')->addSelect('sk')
+            ->where('s.isVisible = :visible')
+            ->setParameter('visible', true)
+            ->orderBy('s.score', 'DESC')
+            ->addOrderBy('s.id', 'ASC')
+            ->setMaxResults($limit);
+
+        if (!empty($excludeIds)) {
+            $qb->andWhere('s.id NOT IN (:excludeIds)')
+               ->setParameter('excludeIds', $excludeIds);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
     public function findOneWithDetails(int $id): ?Student
     {
         return $this->createQueryBuilder('s')

@@ -10,7 +10,16 @@ export default defineConfig({
   ],
   server: {
     proxy: {
-      '/api': { target: 'http://localhost:8000', changeOrigin: true }
+      '/api/upload': {
+        target: 'http://127.0.0.1:8000',
+        changeOrigin: true,
+        configure: (proxy) => {
+          proxy.on('proxyReq', (proxyReq, req) => {
+            proxyReq.method = req.method
+          })
+        },
+      },
+      '/api': { target: 'http://127.0.0.1:8000', changeOrigin: true },
     }
   },
 })

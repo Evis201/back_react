@@ -1,5 +1,3 @@
--- PostgreSQL setup script
--- Usage: psql -U app -d app -f setup.sql
 
 CREATE TABLE IF NOT EXISTS app_user (
     id          SERIAL PRIMARY KEY,

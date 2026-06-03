@@ -21,6 +21,7 @@ Full-stack job platform connecting students and companies. JWT-authenticated RES
 
 ```bash
 composer install
+composer require symfony/mime
 ```
 
 ### 2. Configure environment

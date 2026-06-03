@@ -17,7 +17,7 @@ nav {
     width: auto;
 }
 
-nav > div {
+.nav-links {
     display: flex;
     gap: 30px;
     align-items: center;
@@ -50,5 +50,66 @@ nav a:hover {
 
 .nav-logout:hover {
     opacity: 0.8;
+}
+
+.nav-hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    z-index: 1001;
+}
+
+.nav-ham-bar {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: white;
+    border-radius: 2px;
+    transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+@media (max-width: 768px) {
+    .nav-hamburger {
+        display: flex;
+    }
+
+    .nav-links {
+        display: none;
+        position: fixed;
+        top: 80px;
+        left: 0;
+        right: 0;
+        background: #21427C;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0;
+        padding: 0;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        z-index: 999;
+    }
+
+    .nav-links--open {
+        display: flex;
+    }
+
+    .nav-links a,
+    .nav-links .nav-logout {
+        width: 100%;
+        padding: 16px 24px;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        font-size: 15px;
+        border-radius: 0;
+    }
+
+    .nav-links .nav-logout {
+        border: none;
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+        text-align: left;
+    }
 }
 

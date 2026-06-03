@@ -11,7 +11,23 @@ class RegisterDTO
     public string $email = '';
 
     #[Assert\NotBlank]
-    #[Assert\Length(min: 8, minMessage: 'Password must be at least 8 characters.')]
+    #[Assert\Length(min: 16, minMessage: 'Le mot de passe doit contenir au moins 16 caractères (norme ANSSI).')]
+    #[Assert\Regex(
+        pattern: '/[A-Z]/',
+        message: 'Le mot de passe doit contenir au moins une lettre majuscule.'
+    )]
+    #[Assert\Regex(
+        pattern: '/[a-z]/',
+        message: 'Le mot de passe doit contenir au moins une lettre minuscule.'
+    )]
+    #[Assert\Regex(
+        pattern: '/[0-9]/',
+        message: 'Le mot de passe doit contenir au moins un chiffre.'
+    )]
+    #[Assert\Regex(
+        pattern: '/[\W_]/',
+        message: 'Le mot de passe doit contenir au moins un caractère spécial.'
+    )]
     public string $password = '';
 
     #[Assert\NotBlank]

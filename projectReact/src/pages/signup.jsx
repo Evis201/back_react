@@ -32,6 +32,14 @@ function Signup() {
     e.preventDefault();
     setError(null);
 
+    if (form.password.length < 16) {
+      setError("Le mot de passe doit contenir au moins 16 caractères (norme ANSSI).");
+      return;
+    }
+    if (!/[A-Z]/.test(form.password) || !/[a-z]/.test(form.password) || !/[0-9]/.test(form.password) || !/[\W_]/.test(form.password)) {
+      setError("Le mot de passe doit contenir majuscule, minuscule, chiffre et caractère spécial.");
+      return;
+    }
     if (form.password !== form.confirm) {
       setError("Les mots de passe ne correspondent pas.");
       return;
@@ -116,7 +124,7 @@ function Signup() {
             )}
 
             <div className="field password-field">
-              <input name="password" value={form.password} onChange={handleChange} required className="input" placeholder="Mot de passe" type={showPassword ? "text" : "password"} />
+              <input name="password" value={form.password} onChange={handleChange} required className="input" placeholder="Mot de passe (16 car. min.)" type={showPassword ? "text" : "password"} minLength={16} />
               <button type="button" className="toggle-show" onClick={() => setShowPassword(s => !s)}>{showPassword ? '⌣' : '👁️'}</button>
             </div>
 

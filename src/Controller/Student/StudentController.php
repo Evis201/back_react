@@ -25,6 +25,21 @@ class StudentController extends AbstractApiController
     ) {
     }
 
+    #[Route('/me', name: 'me', methods: ['GET'])]
+    #[IsGranted('ROLE_STUDENT')]
+    public function me(): JsonResponse
+    {
+        /** @var User $user */
+        $user    = $this->getUser();
+        $student = $user->getStudentProfile();
+
+        if ($student === null) {
+            return $this->error('No student profile found.', 404);
+        }
+
+        return $this->success($this->studentService->normalizeDetail($student));
+    }
+
     #[Route('', name: 'index', methods: ['GET'])]
     public function index(Request $request): JsonResponse
     {

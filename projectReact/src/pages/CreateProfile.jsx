@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext.jsx'
 import './CreateProfile.css'
@@ -7,6 +7,7 @@ function CreateProfile() {
   const { token } = useAuth()
   const navigate = useNavigate()
 
+  const [existingStudentId, setExistingStudentId] = useState(null)
   const [form, setForm] = useState({
     firstName: '',
     lastName: '',
@@ -23,8 +24,43 @@ function CreateProfile() {
   const [cvUrl, setCvUrl] = useState('')
   const [uploading, setUploading] = useState(false)
   const [loading, setLoading] = useState(false)
+  const [fetchingProfile, setFetchingProfile] = useState(true)
   const [error, setError] = useState(null)
-  const [alreadyExists, setAlreadyExists] = useState(false)
+
+  useEffect(() => {
+    if (!token) {
+      setFetchingProfile(false)
+      return
+    }
+    fetch('/api/students/me', {
+      headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
+    })
+      .then((res) => {
+        if (res.status === 404) return null
+        if (!res.ok) throw new Error('Erreur lors du chargement du profil.')
+        return res.json()
+      })
+      .then((json) => {
+        if (!json) return
+        const s = json.data
+        setExistingStudentId(s.id)
+        setForm({
+          firstName: s.firstName ?? '',
+          lastName: s.lastName ?? '',
+          bio: s.bio ?? '',
+          avatarUrl: s.avatarUrl ?? '',
+          githubUrl: s.githubUrl ?? '',
+          linkedinUrl: s.linkedinUrl ?? '',
+          promotionYear: s.promotionYear != null ? String(s.promotionYear) : '',
+          school: s.school ?? '',
+          domain: s.domain ?? '',
+          studyYear: s.studyYear != null ? String(s.studyYear) : '',
+        })
+        if (s.cvUrl) setCvUrl(s.cvUrl)
+      })
+      .catch((err) => setError(err.message))
+      .finally(() => setFetchingProfile(false))
+  }, [token])
 
   function handleChange(e) {
     const { name, value } = e.target
@@ -42,7 +78,7 @@ function CreateProfile() {
       data.append('file', file)
       const res = await fetch('/api/upload/cv', {
         method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
+        headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' },
         body: data,
       })
       const json = await res.json()
@@ -76,8 +112,13 @@ function CreateProfile() {
         skills: [],
         projects: [],
       }
-      const res = await fetch('/api/students', {
-        method: 'POST',
+
+      const isUpdate = existingStudentId !== null
+      const url = isUpdate ? `/api/students/${existingStudentId}` : '/api/students'
+      const method = isUpdate ? 'PATCH' : 'POST'
+
+      const res = await fetch(url, {
+        method,
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${token}`,
@@ -85,17 +126,13 @@ function CreateProfile() {
         body: JSON.stringify(body),
       })
       const json = await res.json()
-      if (res.status === 409) {
-        setAlreadyExists(true)
-        return
-      }
       if (!res.ok) {
         const msg = json.details
           ? json.details.map((d) => d.message).join(' | ')
-          : (json.error || 'Erreur lors de la création du profil.')
+          : (json.error || 'Erreur lors de la sauvegarde du profil.')
         throw new Error(msg)
       }
-      const id = json.data?.id
+      const id = json.data?.id ?? existingStudentId
       navigate(id ? `/eleves/${id}` : '/eleves')
     } catch (err) {
       setError(err.message)
@@ -113,14 +150,10 @@ function CreateProfile() {
     )
   }
 
-  if (alreadyExists) {
+  if (fetchingProfile) {
     return (
       <main className="create-profile-page">
-        <div className="profile-exists-msg">
-          <h2>Profil déjà créé</h2>
-          <p>Votre profil étudiant existe déjà.</p>
-          <Link to="/eleves" className="primary-btn">Voir les étudiants</Link>
-        </div>
+        <p>Chargement...</p>
       </main>
     )
   }
@@ -128,7 +161,7 @@ function CreateProfile() {
   return (
     <main className="create-profile-page">
       <div className="create-profile-container">
-        <h1>Créer mon profil</h1>
+        <h1>{existingStudentId ? 'Modifier mon profil' : 'Créer mon profil'}</h1>
 
         <form className="profile-form" onSubmit={handleSubmit}>
           <div className="form-section">
@@ -207,7 +240,7 @@ function CreateProfile() {
           {error && <p className="form-error">{error}</p>}
 
           <button type="submit" className="primary-btn" disabled={loading || uploading}>
-            {loading ? 'Création...' : 'Créer mon profil'}
+            {loading ? 'Sauvegarde...' : existingStudentId ? 'Mettre à jour' : 'Créer mon profil'}
           </button>
         </form>
       </div>

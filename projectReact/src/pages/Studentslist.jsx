@@ -6,6 +6,8 @@ function Studentslist() {
     const [students, setStudents] = useState([]);
     const [search, setSearch] = useState("");
     const [activeFilter, setActiveFilter] = useState("all");
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(false);
 
     const filterOptions = [
         { key: "all", label: "Tous" },
@@ -21,15 +23,22 @@ function Studentslist() {
     };
 
     useEffect(() => {
-        fetch("/api/students")
+        fetch(`/api/students?page=${page}&limit=20`)
             .then((res) => res.json())
             .then((result) => {
-                setStudents(result.data);
+                const items = result.data ?? [];
+                const meta = result.meta ?? {};
+                if (page === 1) {
+                    setStudents(items);
+                } else {
+                    setStudents((prev) => [...prev, ...items]);
+                }
+                setHasMore(meta.page < meta.pages);
             })
             .catch((error) => {
                 console.error("Erreur :", error);
             });
-    }, []);
+    }, [page]);
 
     const filteredStudents = useMemo(() => {
         const term = search.trim().toLowerCase();
@@ -131,6 +140,13 @@ function Studentslist() {
                     <div className="no-results">Aucun étudiant trouvé pour cette recherche.</div>
                 )}
             </div>
+            {hasMore && !search && (
+                <div style={{ textAlign: 'center', margin: '1rem 0' }}>
+                    <button className="filter-button" onClick={() => setPage((p) => p + 1)}>
+                        Voir plus
+                    </button>
+                </div>
+            )}
         </div>
     );
 }

@@ -20,6 +20,14 @@ class UploadController extends AbstractController
             return new JsonResponse(['success' => false, 'error' => 'No file provided.'], 400);
         }
 
+        if (!$file->isValid()) {
+            $errorCode = $file->getError();
+            $msg = ($errorCode === \UPLOAD_ERR_INI_SIZE || $errorCode === \UPLOAD_ERR_FORM_SIZE)
+                ? 'File exceeds server upload limit (max 2 MB by default). Ask admin to raise upload_max_filesize.'
+                : 'File upload failed (error ' . $errorCode . ').';
+            return new JsonResponse(['success' => false, 'error' => $msg], 422);
+        }
+
         $allowedMimes = ['application/pdf', 'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document'];
         if (!in_array($file->getMimeType(), $allowedMimes, true)) {
             return new JsonResponse(['success' => false, 'error' => 'Only PDF and Word documents are allowed.'], 422);

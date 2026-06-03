@@ -131,6 +131,21 @@
   gap: 1.3rem;
 }
 
+@media (max-width: 600px) {
+  .search-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .sort-select {
+    min-width: unset;
+    width: 100%;
+  }
+
+  .offers-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .offer-card-link {
   display: block;
   text-decoration: none;
